@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements android.os.Handle
         supportTv = (TextView) findViewById(R.id.is_support_tv);
 
         curSelDate = TimeUtil.getCurrentDate();
-        Log.d("test","time:"+curSelDate);
     }
 
     private void initData() {
@@ -225,19 +224,11 @@ public class MainActivity extends AppCompatActivity implements android.os.Handle
         stepDataDao = new StepDataDao(this);
         stepEntityList.clear();
         stepEntityList.addAll(stepDataDao.getAllDatas());
-        if (stepEntityList.size() - 7 > 0){
-            // 在这里获取历史记录条数，当条数达到7条或以上时，就开始删除第七天之前的数据
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    int step = stepEntityList.size();
-                    String[] times = TimeUtil.changeFormatDate(curSelDate).split("-");
-                    while (step - 7 > 0) {
-                        stepDataDao.deleteCurData(TimeUtil.getPastTime(Integer.valueOf(times[0]), Integer.valueOf(times[1]), Integer.valueOf(times[2]), step));
-                        --step;
-                    }
-                }
-            }).start();
+        int step = stepEntityList.size();
+        String[] times = TimeUtil.changeFormatDate(curSelDate).split("-");
+        while (step - 7 > 0) {
+            stepDataDao.deleteCurData(TimeUtil.getPastTime(Integer.valueOf(times[0]), Integer.valueOf(times[1]), Integer.valueOf(times[2]), step));
+            --step;
         }
     }
 

@@ -248,7 +248,7 @@ public class StepService extends Service implements SensorEventListener {
                 .getSystemService(SENSOR_SERVICE);
         //android4.4以后可以使用计步传感器
         int VERSION_CODES = Build.VERSION.SDK_INT;
-        if (VERSION_CODES >= 19) {
+        if (VERSION_CODES >= android.os.Build.VERSION_CODES.KITKAT) {
             addCountStepListener();
         }
     }
@@ -258,8 +258,14 @@ public class StepService extends Service implements SensorEventListener {
      * 添加传感器监听
      */
     private void addCountStepListener() {
-        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        Sensor detectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        Sensor countSensor = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        }
+        Sensor detectorSensor = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            detectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        }
         if (countSensor != null) {
             stepSensor = 0;
             sensorManager.registerListener(StepService.this, countSensor, SensorManager.SENSOR_DELAY_NORMAL);
