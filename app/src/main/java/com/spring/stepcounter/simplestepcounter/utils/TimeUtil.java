@@ -162,4 +162,47 @@ public class TimeUtil {
         }
         return weekStrings[w];
     }
+
+    /**
+     * 获取指定时间前多少天为哪一天
+     * @param year 指定年
+     * @param month 指定月
+     * @param day 指定日
+     * @param step 步长
+     * @return
+     */
+    public static String getPastTime(int year, int month, int day, int step){
+        String time = null;
+        if (day - step >= 0){
+            time = dateFormat.format(year+"-"+month+"-"+(day-step+1));
+        }else if (month > 1){
+            switch (month-1){
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
+                    time = getPastTime(year,month-1,31,step-day);
+                    break;
+                case 2:
+                    if (year%4==0 && year%100!=0 || year%400==0){
+                        time = getPastTime(year,month-1,28,step-day);
+                    }else {
+                        time = getPastTime(year,month-1,29,step-day);
+                    }
+                    break;
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    time = getPastTime(year,month-1,30,step-day);
+                    break;
+            }
+        }else if (year > 1){
+            time = getPastTime(year-1,12,31,step-day);
+        }
+        return time;
+    }
 }

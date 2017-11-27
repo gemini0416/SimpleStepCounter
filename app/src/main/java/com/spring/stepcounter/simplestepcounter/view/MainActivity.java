@@ -223,11 +223,13 @@ public class MainActivity extends AppCompatActivity implements android.os.Handle
         stepDataDao = new StepDataDao(this);
         stepEntityList.clear();
         stepEntityList.addAll(stepDataDao.getAllDatas());
-        if (stepEntityList.size() >= 7) {
-            // TODO: 2017/3/27 在这里获取历史记录条数，当条数达到7条或以上时，就开始删除第七天之前的数据,暂未实现
-
+        int step = stepEntityList.size();
+        while (step -7 > 0){
+            // 在这里获取历史记录条数，当条数达到7条或以上时，就开始删除第七天之前的数据
+            String[] times = TimeUtil.changeFormatDate(curSelDate).split("-");
+            stepDataDao.deleteCurData(TimeUtil.getPastTime(Integer.valueOf(times[0]), Integer.valueOf(times[1]), Integer.valueOf(times[2]), step));
+            --step;
         }
-
     }
 
     @Override
