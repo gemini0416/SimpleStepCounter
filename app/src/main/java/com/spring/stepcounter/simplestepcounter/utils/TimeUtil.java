@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * 时间工具类
  */
 
 public class TimeUtil {
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.CANADA);
     private static Calendar mCalendar = Calendar.getInstance();
     private static String[] weekStrings = new String[]{"日","一", "二", "三", "四", "五", "六"};
     private static String[] rWeekStrings = new String[]{"周日","周一", "周二", "周三", "周四", "周五", "周六"};
@@ -25,7 +26,7 @@ public class TimeUtil {
      * @return 2017-02-09
      */
     public static String changeFormatDate(String date){
-        SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
         String curDate = null;
         try {
             Date dt = dateFormat.parse(date);
@@ -41,9 +42,8 @@ public class TimeUtil {
      * @return  今天 09:48
      */
     public static String getCurTime(){
-        SimpleDateFormat dFormat = new SimpleDateFormat("HH:mm");
-        String time = "今天 "+dFormat.format(System.currentTimeMillis());
-        return time;
+        SimpleDateFormat dFormat = new SimpleDateFormat("HH:mm", Locale.CANADA);
+        return "今天 "+dFormat.format(System.currentTimeMillis());
     }
 
     /**
@@ -98,8 +98,7 @@ public class TimeUtil {
      * @return yyyy年MM月dd日
      */
     public static String getCurrentDate() {
-        String currentDateStr = dateFormat.format(mCalendar.getTime());
-        return currentDateStr;
+        return dateFormat.format(mCalendar.getTime());
     }
 
 

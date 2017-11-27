@@ -32,6 +32,7 @@ import com.spring.stepcounter.simplestepcounter.view.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class StepService extends Service implements SensorEventListener {
     public static final String TAG = "StepService";
@@ -102,10 +103,10 @@ public class StepService extends Service implements SensorEventListener {
          */
         nfIntent = new Intent(this, MainActivity.class);
         builder.setContentIntent(PendingIntent.getActivity(this, 0, nfIntent, 0)) // 设置PendingIntent
-                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher)) // 设置下拉列表中的图标(大图标)
-                .setContentTitle("今日步数"+CURRENT_STEP+"步") // 设置下拉列表里的标题
-                .setSmallIcon(R.mipmap.ic_launcher) // 设置状态栏内的小图标
-                .setContentText("加油，要记得勤加运动"); // 设置上下文内容
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher_round)) // 设置下拉列表中的图标(大图标)
+                .setContentTitle(getResources().getString(R.string.steps) + CURRENT_STEP + getResources().getString(R.string.step)) // 设置下拉列表里的标题
+                .setSmallIcon(R.mipmap.ic_launcher_round) // 设置状态栏内的小图标
+                .setContentText(getResources().getString(R.string.prompt)); // 设置上下文内容
         // 获取构建好的Notification
         Notification stepNotification = builder.build();
 
@@ -167,6 +168,7 @@ public class StepService extends Service implements SensorEventListener {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
+                assert action != null;
                 switch (action) {
                     // 屏幕灭屏广播
                     case Intent.ACTION_SCREEN_OFF:
@@ -227,7 +229,7 @@ public class StepService extends Service implements SensorEventListener {
      */
     private void isNewDay() {
         String time = "00:00";
-        if (time.equals(new SimpleDateFormat("HH:mm").format(new Date())) ||
+        if (time.equals(new SimpleDateFormat("HH:mm", Locale.CHINA).format(new Date())) ||
                 !CURRENT_DATE.equals(TimeUtil.getCurrentDate())) {
             initTodayData();
         }
