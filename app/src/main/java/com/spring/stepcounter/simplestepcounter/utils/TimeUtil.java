@@ -15,7 +15,6 @@ import java.util.Locale;
 
 public class TimeUtil {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.CANADA);
-    private static Calendar mCalendar = Calendar.getInstance();
     private static String[] weekStrings = new String[]{"日","一", "二", "三", "四", "五", "六"};
     private static String[] rWeekStrings = new String[]{"周日","周一", "周二", "周三", "周四", "周五", "周六"};
 
@@ -38,6 +37,23 @@ public class TimeUtil {
     }
 
     /**
+     * 改变日期格式
+     * @param date  2017-02-09
+     * @return 2017年02月09日
+     */
+    public static String changeDateFormat(String date){
+        SimpleDateFormat dFormatTmp = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+        String curDate = null;
+        try {
+            Date dt = dFormatTmp.parse(date);
+            curDate = dateFormat.format(dt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return curDate;
+    }
+
+    /**
      * 返回当前的时间
      * @return  今天 09:48
      */
@@ -52,7 +68,7 @@ public class TimeUtil {
      * @return
      */
     public static String getWeekStr(String dateStr){
-
+        Calendar mCalendar = Calendar.getInstance();
         String todayStr = dateFormat.format(mCalendar.getTime());
 
         if(todayStr.equals(dateStr)){
@@ -89,6 +105,7 @@ public class TimeUtil {
      * @return dd
      */
     public static int getCurrentDay() {
+        Calendar mCalendar = Calendar.getInstance();
         return mCalendar.get(Calendar.DATE);
     }
 
@@ -98,6 +115,7 @@ public class TimeUtil {
      * @return yyyy年MM月dd日
      */
     public static String getCurrentDate() {
+        Calendar mCalendar = Calendar.getInstance();
         return dateFormat.format(mCalendar.getTime());
     }
 
@@ -126,7 +144,7 @@ public class TimeUtil {
 
     /**
      * 根据当前日期获取以含当天的前一周日期
-     * @return [2017年02月21日, 2017年02月22日, 2017年02月23日, 2017年02月24日, 2017年02月25日, 2017年02月26日, 2017年02月27日]
+     * @return
      */
     public static List<String> getBeforeDateListByNow(){
         List<String> weekList = new ArrayList<>();
@@ -174,7 +192,7 @@ public class TimeUtil {
     public static String getPastTime(int year, int month, int day, int step){
         String time = null;
         if (day - step >= 0){
-            time = dateFormat.format(year+"-"+month+"-"+(day-step+1));
+            time = changeDateFormat(year+"-"+month+"-"+(day-step+1));
         }else if (month > 1){
             switch (month-1){
                 case 1:

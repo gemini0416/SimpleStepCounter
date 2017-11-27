@@ -56,7 +56,7 @@ public class BeforeOrAfterCalendarView extends RelativeLayout {
             int day = dayList.get(i);
             String curItemDate = dateList.get(i);
             final RecordsCalenderItemView itemView;
-            if(day == TimeUtil.getCurrentDay()){
+            if(curItemDate.equals(TimeUtil.getCurrentDate())){
                 itemView = new RecordsCalenderItemView(mContext, "今天", String.valueOf(day), i, curItemDate);
             }else{
                 itemView = new RecordsCalenderItemView(mContext, TimeUtil.getCurWeekDay(curItemDate), String.valueOf(day), i, curItemDate);

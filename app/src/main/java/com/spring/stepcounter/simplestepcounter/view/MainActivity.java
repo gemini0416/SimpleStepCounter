@@ -11,6 +11,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements android.os.Handle
         supportTv = (TextView) findViewById(R.id.is_support_tv);
 
         curSelDate = TimeUtil.getCurrentDate();
+        Log.d("test","time:"+curSelDate);
     }
 
     private void initData() {

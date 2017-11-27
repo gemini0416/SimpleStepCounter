@@ -107,7 +107,7 @@ public class StepDataDao {
         stepDb = stepHelper.getReadableDatabase();
 
         if (stepDb.isOpen())
-            stepDb.delete("step", "curDate", new String[]{curDate});
+            stepDb.delete("step", "curDate=?", new String[]{curDate});
         stepDb.close();
     }
 }
