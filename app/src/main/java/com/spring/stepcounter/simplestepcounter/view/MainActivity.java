@@ -11,10 +11,8 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Display;
+import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -76,10 +74,10 @@ public class MainActivity extends AppCompatActivity implements android.os.Handle
     }
 
     private void initData() {
-        WindowManager windowManager = getWindowManager();
-        Display display = windowManager.getDefaultDisplay();
-        screenWidth = display.getWidth();
-        screenHeight = display.getHeight();
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        screenWidth = metrics.widthPixels;
+        screenHeight = metrics.heightPixels;
 
         //放到获取宽度之后
         calenderView = new BeforeOrAfterCalendarView(this);
