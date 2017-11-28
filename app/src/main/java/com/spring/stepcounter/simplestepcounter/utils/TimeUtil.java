@@ -2,6 +2,7 @@ package com.spring.stepcounter.simplestepcounter.utils;
 
 
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -143,18 +144,14 @@ public class TimeUtil {
 
 
     /**
-     * 根据当前日期获取以含当天的前一周日期
+     * 根据当前日期获取前三天和后三天时间
      * @return
      */
-    public static List<String> getBeforeDateListByNow(){
+    public static List<String> getBeforeDateListByNow(String time){
         List<String> weekList = new ArrayList<>();
 
-        for (int i = -6; i <= 0; i++) {
-            //以周日为一周的第一天
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DATE, i);
-            String date = dateFormat.format(calendar.getTime());
-            weekList.add(date);
+        for (int i = -3; i <= 3; i++) {
+            weekList.add(getPastTime(time, i));
         }
         return weekList;
     }
@@ -182,45 +179,16 @@ public class TimeUtil {
     }
 
     /**
-     * 获取指定时间前多少天为哪一天
-     * @param year 指定年
-     * @param month 指定月
-     * @param day 指定日
-     * @param step 步长
+     * 获取指定时间多少天为哪一天
+     * @param time yyyy年mm月dd日
+     * @param step 步长(+后多少天，-前多少天)
      * @return
      */
-    public static String getPastTime(int year, int month, int day, int step){
-        String time = null;
-        if (day - step >= 0){
-            time = changeDateFormat(year+"-"+month+"-"+(day-step+1));
-        }else if (month > 1){
-            switch (month-1){
-                case 1:
-                case 3:
-                case 5:
-                case 7:
-                case 8:
-                case 10:
-                case 12:
-                    time = getPastTime(year,month-1,31,step-day);
-                    break;
-                case 2:
-                    if (year%4==0 && year%100!=0 || year%400==0){
-                        time = getPastTime(year,month-1,28,step-day);
-                    }else {
-                        time = getPastTime(year,month-1,29,step-day);
-                    }
-                    break;
-                case 4:
-                case 6:
-                case 9:
-                case 11:
-                    time = getPastTime(year,month-1,30,step-day);
-                    break;
-            }
-        }else if (year > 1){
-            time = getPastTime(year-1,12,31,step-day);
-        }
-        return time;
+    public static String getPastTime(String time, int step){
+        Date date = dateFormat.parse(time, new ParsePosition(0));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, step);
+        return dateFormat.format(calendar.getTime());
     }
 }

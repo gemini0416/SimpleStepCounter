@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SimpleStepCounter</string>
+    <string name="app_name">StepCounter</string>
     <string name="steps">今日步数</string>
     <string name="step">步</string>
     <string name="prompt">加油，要记得勤加运动</string>

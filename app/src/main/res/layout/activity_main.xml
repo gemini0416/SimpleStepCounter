@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     tools:context="com.spring.stepcounter.simplestepcounter.view.MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/movement_records_calender_ll"

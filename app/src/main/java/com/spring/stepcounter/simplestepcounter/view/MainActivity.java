@@ -11,7 +11,11 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements android.os.Handle
     private DecimalFormat df = new DecimalFormat("#.##");
     private List<StepEntity> stepEntityList = new ArrayList<>();
     private StepDataDao stepDataDao;
+    private Toolbar mToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,19 @@ public class MainActivity extends AppCompatActivity implements android.os.Handle
 
 
     private void initView() {
+        mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        mToolBar.setTitle(R.string.app_name);
+        setSupportActionBar(mToolBar);
+        mToolBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.clean) {
+                    cleanRecordList();
+                }
+                return true;
+            }
+        });
+
         movementCalenderLl = (LinearLayout) findViewById(R.id.movement_records_calender_ll);
         kmTimeTv = (TextView) findViewById(R.id.movement_total_km_time_tv);
         totalKmTv = (TextView) findViewById(R.id.movement_total_km_tv);
@@ -222,12 +240,23 @@ public class MainActivity extends AppCompatActivity implements android.os.Handle
         stepDataDao = new StepDataDao(this);
         stepEntityList.clear();
         stepEntityList.addAll(stepDataDao.getAllDatas());
+    }
+
+    /**
+     * 删除全部运动历史纪录
+     */
+    private void cleanRecordList() {
         int step = stepEntityList.size();
-        String[] times = TimeUtil.changeFormatDate(curSelDate).split("-");
         while (step - 7 > 0) {
-            stepDataDao.deleteCurData(TimeUtil.getPastTime(Integer.valueOf(times[0]), Integer.valueOf(times[1]), Integer.valueOf(times[2]), step));
+            stepDataDao.deleteCurData(TimeUtil.getPastTime(stepEntityList.get(stepEntityList.size()-1).getCurDate(),-step));
             --step;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
